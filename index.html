@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>TALENTRONICS 2025</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
       :root {
         /* Alexa palette */
@@ -131,6 +132,69 @@
         border-bottom-color: var(--accent);
       }
 
+      /* Social icon with hover effect */
+      .social-icon {
+        position: relative;
+        list-style: none;
+        flex-basis: 2.5rem;
+      }
+      .social-icon::after {
+        position: absolute;
+        content: attr(data-tooltip);
+        inset: -45% auto auto 50%;
+        z-index: 10;
+        translate: -50%;
+        padding: 0.25rem 0.75rem;
+        font-size: 0.875rem;
+        color: #fff;
+        background: linear-gradient(-45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+        border-radius: 0.25rem;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: inset 0.4s cubic-bezier(0.47, 2, 0.41, 1.5), visibility 0.3s ease-in-out, opacity 0.2s ease-in-out;
+      }
+      .social-icon:has(a:hover, a:focus-visible)::after {
+        opacity: 1;
+        visibility: visible;
+        inset-block-start: -60%;
+      }
+      .social-icon a {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        aspect-ratio: 1;
+        font-size: 1.25rem;
+        color: var(--text-blue);
+        border: 1px solid var(--text-blue);
+        border-radius: 100%;
+        text-decoration: none;
+        outline: none;
+        overflow: hidden;
+        transition: color 0.3s ease-in-out;
+      }
+      .social-icon a > i {
+        position: relative;
+        z-index: 1;
+      }
+      .social-icon a::after {
+        position: absolute;
+        content: "";
+        inset: 100% 0 0;
+        background: linear-gradient(-45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+        pointer-events: none;
+        transition: inset 0.3s ease-in-out;
+      }
+      .social-icon a:hover,
+      .social-icon a:focus-visible {
+        color: #fff;
+      }
+      .social-icon a:hover::after,
+      .social-icon a:focus-visible::after {
+        inset-block-start: 0;
+      }
+
       /* Depth card effects (shadow tiers) */
       .card-1 {
         box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -164,6 +228,11 @@
             <a href="#schedule" class="nav-link">schedule</a>
             <a href="#gallery" class="nav-link">gallery</a>
             <a href="#contact" class="nav-link">contact</a>
+            <li class="social-icon" data-tooltip="Instagram">
+              <a href="https://www.instagram.com/talentronics2k25_26" target="_blank" rel="noopener" aria-label="Instagram">
+                <i class="fa-brands fa-instagram"></i>
+              </a>
+            </li>
           </div>
         </div>
       </div>
