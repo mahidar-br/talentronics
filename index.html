@@ -101,6 +101,27 @@
       .navbar-brand { color: var(--heading-main) !important; font-weight:700; }
       /* subtle translucent footer */
       footer.bg-light { background: linear-gradient(90deg, rgba(255,255,255,0.65), rgba(255,255,255,0.45)); }
+
+      /* Depth card effects (shadow tiers) */
+      .card-1 {
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+      }
+      .card-1:hover {
+        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+      }
+      .card-2 {
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+      }
+      .card-3 {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+      }
+      .card-4 {
+        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+      }
+      .card-5 {
+        box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+      }
     </style>
   </head>
   <body>
@@ -164,7 +185,7 @@
 
     <!-- BrainCode -->
     <div class="col-md-4">
-      <div class="card p-3 event-card h-100">
+      <div class="card card-1 p-3 event-card h-100">
         <h5 class="card-title">BRAINCODE</h5>
         <p class="small mb-1"><strong>Type:</strong> C - Code (individual)</p>
         <p class="mb-2">A timed C programming challenge. Language: C. Duration &amp; rounds announced on the day.</p>
@@ -174,7 +195,7 @@
 
     <!-- InnoTech -->
     <div class="col-md-4">
-      <div class="card p-3 event-card h-100">
+      <div class="card card-1 p-3 event-card h-100">
         <h5 class="card-title">INNOTECH</h5>
         <p class="small mb-1"><strong>Type:</strong> Project (team)</p>
         <p class="mb-2">Project presentation & demo. Team size: Min 2 — Max 4.</p>
@@ -184,7 +205,7 @@
 
     <!-- Electropreneur -->
     <div class="col-md-4">
-      <div class="card p-3 event-card h-100">
+      <div class="card card-1 p-3 event-card h-100">
         <h5 class="card-title">ELECTROPRENEUR</h5>
         <p class="small mb-1"><strong>Type:</strong> Startup Pitch (team)</p>
         <p class="mb-2">Pitch your startup idea. Team size: Min 2 — Max 4. 3 minute pitch + Q&amp;A.</p>
@@ -202,7 +223,7 @@
 
     <!-- Poster Recreation -->
     <div class="col-md-4">
-      <div class="card p-3 event-card h-100">
+      <div class="card card-1 p-3 event-card h-100">
         <h5 class="card-title">POSTER RECREATION</h5>
         <p class="small mb-1"><strong>Type:</strong> Solo or Team</p>
         <p class="mb-2">Recreate a poster using limited resources. Time limit: announced at venue.</p>
@@ -212,7 +233,7 @@
 
     <!-- Standup Comedy -->
     <div class="col-md-4">
-      <div class="card p-3 event-card h-100">
+      <div class="card card-1 p-3 event-card h-100">
         <h5 class="card-title">STANDUP COMEDY</h5>
         <p class="small mb-1"><strong>Type:</strong> Solo</p>
         <p class="mb-2">Open-mic standup. Keep content college-friendly. Time limit: 5 minutes.</p>
@@ -222,7 +243,7 @@
 
     <!-- Tech Rangoli -->
     <div class="col-md-4">
-      <div class="card p-3 event-card h-100">
+      <div class="card card-1 p-3 event-card h-100">
         <h5 class="card-title">TECH RANGOLI</h5>
         <p class="small mb-1"><strong>Type:</strong> Team</p>
         <p class="mb-2">Creative rangoli with a technical theme. Team size: Min 1 — Max 3.</p>
