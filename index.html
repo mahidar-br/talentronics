@@ -195,6 +195,66 @@
         inset-block-start: 0;
       }
 
+      /* Mobile menu toggle */
+      .nav-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--text-blue);
+        cursor: pointer;
+        padding: 0.5rem;
+      }
+      .nav-toggle:hover {
+        color: var(--accent);
+      }
+
+      /* Mobile responsive */
+      @media (max-width: 768px) {
+        body {
+          padding-top: 60px;
+        }
+        .custom-nav .container > div {
+          position: relative;
+        }
+        .nav-toggle {
+          display: block;
+        }
+        .custom-nav .nav-links {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          flex-direction: column;
+          background: #fff;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+          padding: 1rem;
+          gap: 0.5rem !important;
+          margin-top: 1rem;
+          display: none;
+        }
+        .custom-nav .nav-links.active {
+          display: flex;
+        }
+        .custom-nav .nav-link {
+          width: 100%;
+          text-align: center;
+          padding: 0.75rem;
+          margin: 0 !important;
+          border-bottom: none;
+          border-left: 3px solid transparent;
+        }
+        .custom-nav .nav-link:hover,
+        .custom-nav .nav-link.active {
+          border-bottom: none;
+          border-left-color: var(--accent);
+          background: rgba(6,75,115,0.05);
+        }
+        .social-icon {
+          margin: 0.5rem auto;
+        }
+      }
+
       /* Depth card effects (shadow tiers) */
       .card-1 {
         box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -223,11 +283,14 @@
       <div class="container">
         <div class="d-flex justify-content-between align-items-center py-3">
           <a href="#top" class="nav-brand">Talentronics</a>
-          <div class="d-flex justify-content-center align-items-center gap-3 nav-links">
-            <a href="#events" class="nav-link active">events</a>
-            <a href="#schedule" class="nav-link">schedule</a>
-            <a href="#gallery" class="nav-link">gallery</a>
-            <a href="#contact" class="nav-link">contact</a>
+          <button class="nav-toggle" onclick="toggleMenu()" aria-label="Toggle menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="d-flex justify-content-center align-items-center gap-3 nav-links" id="navLinks">
+            <a href="#events" class="nav-link active" onclick="closeMenu()">events</a>
+            <a href="#schedule" class="nav-link" onclick="closeMenu()">schedule</a>
+            <a href="#gallery" class="nav-link" onclick="closeMenu()">gallery</a>
+            <a href="#contact" class="nav-link" onclick="closeMenu()">contact</a>
             <li class="social-icon" data-tooltip="Instagram">
               <a href="https://www.instagram.com/talentronics2k25_26" target="_blank" rel="noopener" aria-label="Instagram">
                 <i class="fa-brands fa-instagram"></i>
@@ -479,6 +542,27 @@
         const el = document.getElementById('imagePreviewModal');
         let modal = bootstrap.Modal.getInstance(el); if(!modal){ modal = new bootstrap.Modal(el); } modal.show();
       }
+      
+      // Mobile menu toggle
+      function toggleMenu() {
+        const navLinks = document.getElementById('navLinks');
+        navLinks.classList.toggle('active');
+      }
+      
+      function closeMenu() {
+        const navLinks = document.getElementById('navLinks');
+        navLinks.classList.remove('active');
+      }
+      
+      // Close menu when clicking outside
+      document.addEventListener('click', function(event) {
+        const nav = document.querySelector('.custom-nav');
+        const navLinks = document.getElementById('navLinks');
+        const toggle = document.querySelector('.nav-toggle');
+        if (!nav.contains(event.target) || (!toggle.contains(event.target) && !navLinks.contains(event.target))) {
+          navLinks.classList.remove('active');
+        }
+      });
     </script>
   </body>
 </html>
