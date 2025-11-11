@@ -102,6 +102,35 @@
       /* subtle translucent footer */
       footer.bg-light { background: linear-gradient(90deg, rgba(255,255,255,0.65), rgba(255,255,255,0.45)); }
 
+      /* Custom centered nav (Tailwind-like look) */
+      .custom-nav { background:#fff; box-shadow: 0 1px 2px rgba(0,0,0,0.08); z-index: 1030; }
+      .custom-nav .nav-brand {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-blue) !important;
+        text-decoration: none;
+        letter-spacing: 0.3px;
+      }
+      .custom-nav .nav-brand:hover {
+        color: var(--accent) !important;
+      }
+      .custom-nav .nav-links { text-transform: capitalize; }
+      .custom-nav .nav-link {
+        color: var(--text-blue) !important;
+        border-bottom: 2px solid transparent;
+        padding: 0.25rem 0.75rem;
+        margin: 0 0.5rem;
+        text-decoration: none;
+      }
+      .custom-nav .nav-link:hover {
+        color: var(--accent) !important;
+        border-bottom-color: var(--accent);
+      }
+      .custom-nav .nav-link.active {
+        color: var(--text-blue) !important;
+        border-bottom-color: var(--accent);
+      }
+
       /* Depth card effects (shadow tiers) */
       .card-1 {
         box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -124,22 +153,18 @@
       }
     </style>
   </head>
-  <body>
+  <body id="top">
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
+    <nav class="custom-nav fixed-top">
       <div class="container">
-        <a class="navbar-brand fw-bold" href="#">Talentronics Fest</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"
-          aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="nav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link" href="#events">Events</a></li>
-            <li class="nav-item"><a class="nav-link" href="#schedule">Schedule</a></li>
-            <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
-            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-          </ul>
+        <div class="d-flex justify-content-between align-items-center py-3">
+          <a href="#top" class="nav-brand">Talentronics</a>
+          <div class="d-flex justify-content-center align-items-center gap-3 nav-links">
+            <a href="#events" class="nav-link active">events</a>
+            <a href="#schedule" class="nav-link">schedule</a>
+            <a href="#gallery" class="nav-link">gallery</a>
+            <a href="#contact" class="nav-link">contact</a>
+          </div>
         </div>
       </div>
     </nav>
