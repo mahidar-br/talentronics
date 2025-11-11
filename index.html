@@ -6,30 +6,63 @@
     <title>TALENTRONICS 2025</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-      :root{--accent:#6f42c1}
-      body{padding-top:72px}
-      .hero{background:linear-gradient(90deg, rgba(111,66,193,0.08), rgba(111,66,193,0.03));padding:36px 0}
-      .event-card{border-radius:12px}
-      footer{padding:28px 0}
-      .contact-phone a{text-decoration:none}
-#gallery img { width:100%; height:300px; object-fit:contain; border-radius:12px; background-color:#f8f9fa; padding:6px; box-shadow:0 2px 6px rgba(0,0,0,0.15); }
-/* Gallery poster box (only in #gallery) */
-#gallery img {
-  width: 100%;
-  height: 320px;
-  object-fit: contain;       /* show whole poster without cropping */
-  background-color: #f8f9fa; /* subtle backdrop for letterboxing */
-  padding: 6px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-}
+      :root {
+        /* Requested palette */
+        --body-gradient-start:#6D97CB;  /* Blue-Gray */
+        --body-gradient-end:#DADDE3;    /* Gainsboro */
+        --card-bg:#265999;              /* Cyan Cobalt Blue */
+        --table-bg:#265999;             /* Cyan Cobalt Blue */
+        --heading-main:#CA9703;         /* Chinese Gold */
+        --subheading:#D5AD36;           /* American Gold */
+        --text-on-card:#CA9703;         /* Chinese Gold for card text */
+        --text-on-table:#CA9703;        /* Chinese Gold for table cells */
+        --link:#CA9703;
+        --link-hover:#D5AD36;
+      }
 
-/* Modal image fit */
-#modalImage {
-  max-height: 80vh;
-  object-fit: contain;
-  width: 100%;
-}
+      body {
+        padding-top:72px;
+        background: linear-gradient(135deg, var(--body-gradient-start) 0%, var(--body-gradient-end) 100%);
+        color:#0f1721;
+      }
+      .hero { background:transparent; padding:36px 0; }
+
+      /* Headings */
+      h1 { color:var(--heading-main); font-weight:800; }
+      h2, h3, h4 { color:var(--subheading); font-weight:700; }
+      .card-title { color:var(--subheading); }
+
+      /* Event cards */
+      .event-card { border-radius:12px; background:var(--card-bg); border:1px solid rgba(213,173,54,0.35); color:var(--text-on-card); }
+      .event-card p, .event-card .small, .event-card strong { color:var(--text-on-card); }
+      .event-card a { color:var(--text-on-card); text-decoration:none; }
+      .event-card a:hover { color:var(--subheading); }
+
+      /* Table styling */
+      .table { border-color:rgba(213,173,54,0.35); }
+      .table thead th { background:var(--table-bg); color:var(--subheading); border-color:rgba(213,173,54,0.35); }
+      .table tbody td { background:var(--table-bg); color:var(--text-on-table); border-color:rgba(213,173,54,0.35); }
+      .table-striped>tbody>tr:nth-of-type(odd)>* { background-color:rgba(38,89,153,0.9); }
+
+      footer { padding:28px 0; }
+      .contact-phone a { text-decoration:none; }
+
+      /* Gallery images */
+      #gallery img { width:100%; height:320px; object-fit:contain; background:#ffffff; padding:6px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.15); border:1px solid rgba(213,173,54,0.35); }
+
+      /* Modal image fit */
+      #modalImage { max-height:80vh; object-fit:contain; width:100%; }
+
+      /* Links and buttons */
+      a, a.nav-link { color:var(--link); }
+      a:hover, a.nav-link:hover { color:var(--link-hover); }
+      .btn-primary { background:var(--heading-main); border-color:var(--heading-main); }
+      .btn-primary:hover { background:var(--subheading); border-color:var(--subheading); }
+
+      /* ensure navbar brand stands out */
+      .navbar-brand { color: var(--heading-main) !important; font-weight:700; }
+      /* subtle translucent footer */
+      footer.bg-light { background: linear-gradient(90deg, rgba(255,255,255,0.65), rgba(255,255,255,0.45)); }
     </style>
   </head>
   <body>
@@ -207,345 +240,80 @@
         </div>
       </section>
 
-      <!--
-        <section id="sports" class="mb-5">
-          <h2 class="h4 mb-3">Sports</h2>
-          <div class="row g-3">
-            <div class="col-md-6">
-          <div class="card p-3">
-            <h5>Football</h5>
-            <p class="small mb-1">Team size: 11. Knockout format. Venue: Sports Ground.</p>
-          </div>
-            </div>
-            <div class="col-md-6">
-          <div class="card p-3">
-            <h5>Badminton</h5>
-            <p class="small mb-1">Singles & Doubles. Venue: Indoor Court.</p>
-          </div>
-            </div>
-          </div>
-        </section>
-      -->
-
       <!-- GALLERY -->
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>TALENTRONICS 2025</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-      :root{--accent:#6f42c1}
-      body{padding-top:72px}
-      .hero{background:linear-gradient(90deg, rgba(111,66,193,0.08), rgba(111,66,193,0.03));padding:36px 0}
-      .event-card{border-radius:12px}
-      footer{padding:28px 0}
-      .contact-phone a{text-decoration:none}
-#gallery img { width:100%; height:300px; object-fit:contain; border-radius:12px; background-color:#f8f9fa; padding:6px; box-shadow:0 2px 6px rgba(0,0,0,0.15); }
-/* Gallery poster box (only in #gallery) */
-#gallery img {
-  width: 100%;
-  height: 320px;
-  object-fit: contain;       /* show whole poster without cropping */
-  background-color: #f8f9fa; /* subtle backdrop for letterboxing */
-  padding: 6px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-}
-
-/* Modal image fit */
-#modalImage {
-  max-height: 80vh;
-  object-fit: contain;
-  width: 100%;
-}
-    </style>
-  </head>
-  <body>
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
-      <div class="container">
-        <a class="navbar-brand fw-bold" href="#">Talentronics Fest</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"
-          aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="nav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item"><a class="nav-link" href="#events">Events</a></li>
-            <li class="nav-item"><a class="nav-link" href="#schedule">Schedule</a></li>
-            <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
-            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-    <!-- HERO / HEADLINE -->
-    <header class="hero">
-      <div class="container">
-        <div class="row align-items-center">
-          <div class="col-md-7">
-            <h1 class="display-6 fw-bold">Talentronics — 3 Days of Music, Culture & Sport</h1>
-            <p class="lead">Join us from <strong>14th November</strong> to <strong>16th November</strong>. Below are technical, non-technical and sports events.</p>
-
-            <!-- FORM LINK (replace placeholder) -->
-            <p class="mt-3">Register here:</p>
-            <p><a id="formLink" class="btn btn-lg btn-primary" href="https://docs.google.com/forms/d/e/1FAIpQLScWltyE55t43Fk7QqH8Ud3zoCtMtG7F2exSCCW5aR3tmdbOnA/formResponse" target="_blank" rel="noopener">Open Registration Form</a></p>
-
-            <!-- Example embed (uncomment & replace src if you want an embedded form) -->
-            <!--
-            <div style="max-width:720px;">
-              <iframe src="YOUR_GOOGLE_FORM_EMBED_URL_HERE" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-            </div>
-            -->
-
+      <!-- START: GALLERY (click to preview) -->
+      <section id="gallery" class="mb-5">
+        <h2 class="h4 mb-3">Gallery</h2>
+        <div class="row g-3">
+          <div class="col-6 col-md-3">
+            <img src="images/poster-placeholder.jpeg" alt="Poster" class="img-fluid" onclick="previewImage('images/poster-placeholder.jpeg','Poster')">
           </div>
-          <div class="col-md-5 text-center">
-            <img src="images/poster-placeholder.jpeg" class="img-fluid rounded shadow-sm" alt="Poster">
+          <div class="col-6 col-md-3">
+            <img src="images/photo1.jpeg" alt="Photo 1" class="img-fluid" onclick="previewImage('images/photo1.jpeg','Photo 1')">
           </div>
-        </div>
-      </div>
-    </header>
-
-   <!-- START: EVENTS (updated) -->
-<section id="events" class="mb-5">
-  <h2 class="h4 mb-3">Events</h2>
-  <div class="row g-3">
-    <!-- TECHNICAL EVENTS HEADER -->
-    <div class="col-12">
-      <div class="mb-3">
-        <h5 class="mb-1">Technical Events</h5>
-        <p class="small text-muted">Coding, projects and startup pitches — test your technical skills!</p>
-      </div>
-    </div>
-
-    <!-- BrainCode -->
-    <div class="col-md-4">
-      <div class="card p-3 event-card h-100">
-        <h5 class="card-title">BRAINCODE</h5>
-        <p class="small mb-1"><strong>Type:</strong> C - Code (individual)</p>
-        <p class="mb-2">A timed C programming challenge. Language: C. Duration &amp; rounds announced on the day.</p>
-        <p class="mb-0 small text-muted">Contact: <a href="tel:+918310024574" class="text-decoration-none">Siddarth: 8310024574</a></p>
-      </div>
-    </div>
-
-    <!-- InnoTech -->
-    <div class="col-md-4">
-      <div class="card p-3 event-card h-100">
-        <h5 class="card-title">INNOTECH</h5>
-        <p class="small mb-1"><strong>Type:</strong> Project (team)</p>
-        <p class="mb-2">Project presentation & demo. Team size: Min 2 — Max 4.</p>
-        <p class="mb-0 small text-muted">Contact: <a href="tel:+917619462607" class="text-decoration-none">Srinivas: 7619462607</a></p>
-      </div>
-    </div>
-
-    <!-- Electropreneur -->
-    <div class="col-md-4">
-      <div class="card p-3 event-card h-100">
-        <h5 class="card-title">ELECTROPRENEUR</h5>
-        <p class="small mb-1"><strong>Type:</strong> Startup Pitch (team)</p>
-        <p class="mb-2">Pitch your startup idea. Team size: Min 2 — Max 4. 3 minute pitch + Q&amp;A.</p>
-        <p class="mb-0 small text-muted">Contact: <a href="tel:+918310024574" class="text-decoration-none">Siddarth: 8310024574</a></p>
-      </div>
-    </div>
-
-    <!-- NON-TECHNICAL HEADER -->
-    <div class="col-12 mt-3">
-      <div class="mb-3">
-        <h5 class="mb-1">Non-Technical Events</h5>
-        <p class="small text-muted">Creativity, performance, and fun.</p>
-      </div>
-    </div>
-
-    <!-- Poster Recreation -->
-    <div class="col-md-4">
-      <div class="card p-3 event-card h-100">
-        <h5 class="card-title">POSTER RECREATION</h5>
-        <p class="small mb-1"><strong>Type:</strong> Solo or Team</p>
-        <p class="mb-2">Recreate a poster using limited resources. Time limit: announced at venue.</p>
-        <p class="mb-0 small text-muted">Contact: <a href="tel:+917619462607" class="text-decoration-none">Srinivas: 7619462607</a></p>
-      </div>
-    </div>
-
-    <!-- Standup Comedy -->
-    <div class="col-md-4">
-      <div class="card p-3 event-card h-100">
-        <h5 class="card-title">STANDUP COMEDY</h5>
-        <p class="small mb-1"><strong>Type:</strong> Solo</p>
-        <p class="mb-2">Open-mic standup. Keep content college-friendly. Time limit: 5 minutes.</p>
-        <p class="mb-0 small text-muted">Contact: <a href="tel:+918310024574" class="text-decoration-none">Siddarth: 8310024574</a></p>
-      </div>
-    </div>
-
-    <!-- Tech Rangoli -->
-    <div class="col-md-4">
-      <div class="card p-3 event-card h-100">
-        <h5 class="card-title">TECH RANGOLI</h5>
-        <p class="small mb-1"><strong>Type:</strong> Team</p>
-        <p class="mb-2">Creative rangoli with a technical theme. Team size: Min 1 — Max 3.</p>
-        <p class="mb-0 small text-muted">Contact: <a href="tel:+917619462607" class="text-decoration-none">Srinivas: 7619462607</a></p>
-      </div>
-    </div>
-
-  </div>
-</section>
-<!-- END: EVENTS (updated) -->
-
-
-      <!-- SCHEDULE -->
-      <section id="schedule" class="mb-5">
-        <h2 class="h4 mb-3">Schedule</h2>
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Day</th>
-                <th>Time</th>
-                <th>Event</th>
-                <th>Venue</th>
-              </tr>
-            </thead>
-            <tbody>
-  <tr>
-    <td>13th</td>
-    <td>All Day</td>
-    <td>Technical &amp; Non-technical events</td>
-    <td>Various Venues</td>
-  </tr>
-  <tr>
-    <td>14th</td>
-    <td>Morning</td>
-    <td>Prize Distribution &amp; Cultural Activities</td>
-    <td>Auditorium</td>
-  </tr>
-  <tr>
-    <td>15th</td>
-    <td>Afternoon</td>
-    <td>Flash mob</td>
-    <td>Main Building Lawn</td>
-  </tr>
-  <tr>
-    <td>16th</td>
-    <td>All Day</td>
-    <td>Ethnic Day</td>
-    <td>Main Building Lawn</td>
-  </tr>
-</tbody>
-          </table>
+          <div class="col-6 col-md-3">
+            <img src="images/photo2.jpeg" alt="Photo 2" class="img-fluid" onclick="previewImage('images/photo2.jpeg','Photo 2')">
+          </div>
+          <div class="col-6 col-md-3">
+            <img src="images/photo3.jpeg" alt="Photo 3" class="img-fluid" onclick="previewImage('images/photo3.jpeg','Photo 3')">
+          </div>
         </div>
       </section>
-
-      <!--
-        <section id="sports" class="mb-5">
-          <h2 class="h4 mb-3">Sports</h2>
-          <div class="row g-3">
-            <div class="col-md-6">
-          <div class="card p-3">
-            <h5>Football</h5>
-            <p class="small mb-1">Team size: 11. Knockout format. Venue: Sports Ground.</p>
-          </div>
-            </div>
-            <div class="col-md-6">
-          <div class="card p-3">
-            <h5>Badminton</h5>
-            <p class="small mb-1">Singles & Doubles. Venue: Indoor Court.</p>
-          </div>
-            </div>
-          </div>
-        </section>
-      -->
-
-      <!-- GALLERY -->
-<!-- START: GALLERY (click to preview) -->
-<section id="gallery" class="mb-5">
-  <h2 class="h4 mb-3">Gallery</h2>
-  <div class="row g-3">
-    <div class="col-6 col-md-3">
-      <img src="images/poster-placeholder.jpeg" alt="Poster 1" class="img-fluid rounded" onclick="previewImage('images/poster-placeholder.jpeg','Poster 1')">
-    </div>
-    <div class="col-6 col-md-3">
-      <img src="images/photo1.jpeg" alt="Poster 2" class="img-fluid rounded" onclick="previewImage('images/photo1.jpeg','Poster 2')">
-    </div>
-  </div>
-</section>
-<!-- END: GALLERY (click to preview) -->
+      <!-- END: GALLERY (click to preview) -->
 
       <!-- CONTACT -->
       <section id="contact" class="mb-5">
         <h2 class="h4 mb-3">Contact & Locations</h2>
-        <p class="mb-1">General queries: <a href="tel:+911234567890">+91 12345 67890</a> </p>
-
+        <p class="mb-1">General queries: Siddarth <a href="tel:+918310024574" class="text-decoration-none">+91 83100 24574</a></p>
         <div class="mb-3">
           <h6 class="mb-1">Event Coordinators (Phone)</h6>
           <ul class="list-unstyled contact-phone mb-0">
-            <li><strong>Student Coordinator:</strong> <a href="tel:+911234567890">+91 12345 67890</a></li>
-            <li><strong>Faculty In-charge:</strong> <a href="tel:+919876543210">+91 98765 43210</a></li>
-            <li><strong>Sports Convenor:</strong> <a href="tel:+911112223334">+91 11122 23334</a></li>
+            <li><strong>Student Coordinator:</strong> <a href="tel:+918310024574">+91 83100 24574</a></li>
+            <li><strong>Faculty In-charge: Mr. Prashanth Keni</strong> <a href="tel:+919980539035">+91 99805 39035</a></li>
           </ul>
         </div>
-
         <div class="mb-3">
           <h6 class="mb-1">Event Locations (Lab / Class / Venue)</h6>
-          <ul class="small">
-            <li><strong>Main Stage:</strong> Auditorium, Block A</li>
-            <li><strong>Flashmob / Cultural:</strong> Lawn beside CSE Block</li>
-            <li><strong>Workshops / Labs:</strong> Lab 204, ECE Building (2nd Floor)</li>
-            <li><strong>Sports:</strong> College Sports Ground (North Field)</li>
+          <ul class="small mb-0">
+            <li><strong>Main Stage:</strong> Auditorium</li>
+            <li><strong>Cultural:</strong> Auditorium</li>
+            <li><strong>Flashmob:</strong> RYMEC Main Entrance</li>
           </ul>
-          <p class="small text-muted mb-0">Tip: keep a printed list for volunteers and a map on the event day.</p>
         </div>
-
-        <p class="mb-0 small text-muted">If you receive registrations via Google Forms, share the results sheet with the event coordinators and backup a copy.</p>
+        <p class="mb-0 small text-muted">If you receive registrations via Google Forms, share the results sheet with the event coordinators and back up a copy.</p>
       </section>
 
-      
     </main>
 
     <footer class="bg-light">
       <div class="container text-center">
-        <small class="text-muted">&copy; <span id="year"></span> [College Name]. Built by the Student Tech Team.</small>
+        <small class="text-muted">&copy; <span id="year"></span> RYMEC. Built by a 22ECE Student011.</small>
       </div>
     </footer>
+
+    <!-- Image Preview Modal -->
+    <div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-labelledby="imagePreviewModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content bg-transparent border-0">
+          <div class="modal-body p-0 text-center position-relative">
+            <button type="button" class="btn-close position-absolute top-0 end-0 m-2 btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            <img id="modalImage" src="" alt="" class="img-fluid rounded">
+            <p id="modalCaption" class="mt-2 text-light small"></p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
       document.getElementById('year').textContent = new Date().getFullYear();
-      // To change the Google Form link via command line / script, update the href of #formLink dynamically.
-      // Example: document.getElementById('formLink').href = 'https://forms.gle/your_form_link';
+      function previewImage(src, alt){
+        const modalImg = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+        modalImg.src = src; modalImg.alt = alt || ''; modalCaption.textContent = alt || '';
+        const el = document.getElementById('imagePreviewModal');
+        let modal = bootstrap.Modal.getInstance(el); if(!modal){ modal = new bootstrap.Modal(el); } modal.show();
+      }
     </script>
   </body>
-<!-- START: Image Preview Modal (inserted automatically) -->
-<div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-labelledby="imagePreviewModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content bg-transparent border-0">
-      <div class="modal-body p-0 text-center position-relative">
-        <button type="button" class="btn-close position-absolute top-0 end-0 m-2 btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-        <img id="modalImage" src="" alt="" class="img-fluid rounded">
-        <p id="modalCaption" class="mt-2 text-light small"></p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  // previewImage(src, alt) — called when a gallery image is clicked
-  function previewImage(src, alt) {
-    var modalImg = document.getElementById('modalImage');
-    var modalCaption = document.getElementById('modalCaption');
-    modalImg.src = src;
-    modalImg.alt = alt || '';
-    modalCaption.textContent = alt || '';
-
-    // show the Bootstrap modal
-    var myModalEl = document.getElementById('imagePreviewModal');
-    var modal = bootstrap.Modal.getInstance(myModalEl);
-    if (!modal) {
-      modal = new bootstrap.Modal(myModalEl);
-    }
-    modal.show();
-  }
-</script>
-<!-- END: Image Preview Modal -->
 </html>
