@@ -283,7 +283,7 @@
       <div class="container">
         <div class="d-flex justify-content-between align-items-center py-3">
           <a href="#top" class="nav-brand">Talentronics</a>
-          <button class="nav-toggle" onclick="toggleMenu()" aria-label="Toggle menu">
+          <button class="nav-toggle" onclick="toggleMenu(event)" aria-label="Toggle menu">
             <i class="fa-solid fa-bars"></i>
           </button>
           <div class="d-flex justify-content-center align-items-center gap-3 nav-links" id="navLinks">
@@ -544,7 +544,8 @@
       }
       
       // Mobile menu toggle
-      function toggleMenu() {
+      function toggleMenu(event) {
+        event.stopPropagation();
         const navLinks = document.getElementById('navLinks');
         navLinks.classList.toggle('active');
       }
@@ -556,10 +557,13 @@
       
       // Close menu when clicking outside
       document.addEventListener('click', function(event) {
-        const nav = document.querySelector('.custom-nav');
         const navLinks = document.getElementById('navLinks');
         const toggle = document.querySelector('.nav-toggle');
-        if (!nav.contains(event.target) || (!toggle.contains(event.target) && !navLinks.contains(event.target))) {
+        
+        // If menu is open and click is outside nav
+        if (navLinks.classList.contains('active') && 
+            !navLinks.contains(event.target) && 
+            !toggle.contains(event.target)) {
           navLinks.classList.remove('active');
         }
       });
