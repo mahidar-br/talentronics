@@ -589,346 +589,440 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
   </body>
-<!-- APPENDED: robust preview + mobile menu script (replaces previous) -->
+<!-- OVERRIDE: Robust mobile menu controller (replace previous scripts) -->
 <script>
 (() => {
-  // put year (safely)
-  try { const y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear(); } catch(e){}
+  // safe DOM helper
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
 
-  // modal preview
   function previewImage(src, alt) {
-    const modalImg = document.getElementById('modalImage');
-    const modalCaption = document.getElementById('modalCaption');
-    if (modalImg) modalImg.src = src || modalImg.src;
-    if (modalImg) modalImg.alt = alt || '';
-    if (modalCaption) modalCaption.textContent = alt || '';
-    const el = document.getElementById('imagePreviewModal');
-    if (!el) return;
-    let m = bootstrap.Modal.getInstance(el);
-    if (!m) m = new bootstrap.Modal(el);
-    m.show();
-  }
-  // expose to global scope (used by HTML onclicks)
-  window.previewImage = previewImage;
-
-  // MENU LOGIC
-  const navLinksEl = () => document.getElementById('navLinks');
-  const toggleBtn = () => document.querySelector('.nav-toggle');
-
-  function openMenu() {
-    const nav = navLinksEl(); const btn = toggleBtn();
-    if (!nav) return;
-    nav.classList.add('active');
-    // animate hamburger -> X
-    if (btn) btn.classList.add('open');
-    // optional: lock body scroll on mobile when open
-    document.documentElement.style.overflow = 'hidden';
-  }
-
-  function closeMenu() {
-    const nav = navLinksEl(); const btn = toggleBtn();
-    if (!nav) return;
-    nav.classList.remove('active');
-    if (btn) btn.classList.remove('open');
-    document.documentElement.style.overflow = '';
-  }
-
-  function toggleMenu(evt) {
-    evt && evt.stopPropagation();
-    const nav = navLinksEl();
-    if (!nav) return;
-    if (nav.classList.contains('active')) closeMenu();
-    else openMenu();
-  }
-
-  // attach to button (supports older markup)
-  document.addEventListener('DOMContentLoaded', () => {
-    const btn = toggleBtn();
-    if (btn) {
-      // If the icon markup is only an <i>, we add span wrappers to allow swap
-      if (!btn.querySelector('.bars')) {
-        // create bars and close-x spans inside the button for animation
-        btn.innerHTML = '<span class=\"bars\"><i class=\"fa-solid fa-bars\"></i></span><span class=\"close-x\"><i class=\"fa-solid fa-xmark\"></i></span>';
-      }
-      btn.addEventListener('click', toggleMenu, {passive:true});
-    }
-
-    // Close menu on scroll (debounced small threshold to avoid immediate closing)
-    let lastScroll = window.scrollY;
-    let scrollTimer = null;
-    window.addEventListener('scroll', () => {
-      if (!navLinksEl()?.classList.contains('active')) { lastScroll = window.scrollY; return; }
-      // if user scrolls more than 5px, close menu
-      if (Math.abs(window.scrollY - lastScroll) > 5) closeMenu();
-      // update lastScroll after short delay
-      clearTimeout(scrollTimer);
-      scrollTimer = setTimeout(() => lastScroll = window.scrollY, 200);
-    }, {passive:true});
-
-    // Click outside to close
-    document.addEventListener('click', (e) => {
-      const nav = navLinksEl(); const btnEl = toggleBtn();
-      if (!nav || !nav.classList.contains('active')) return;
-      // If click is inside nav or the toggle, ignore
-      if (nav.contains(e.target) || (btnEl && btnEl.contains(e.target))) return;
-      closeMenu();
-    }, {passive:true});
-
-    // Close on Escape
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
-
-    // Attach smooth-scroll + close behavior to all nav links
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', (evt) => {
-        // smooth scroll if anchor
-        const href = link.getAttribute('href') || '';
-        if (href.startsWith('#')) {
-          evt.preventDefault();
-          const target = href === '#' || href === '#top' ? document.documentElement : document.querySelector(href);
-          if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
-        }
-        // ensure menu closed after a tiny delay
-        setTimeout(closeMenu, 160);
-      }, {passive:false});
-    });
-
-    // Social links should close menu after click
-    document.querySelectorAll('.social-icon a').forEach(a => {
-      a.addEventListener('click', () => setTimeout(closeMenu, 100), {passive:true});
-    });
-  });
-
-  // expose functions for debugging if needed
-  window.toggleMenu = toggleMenu;
-  window.openMenu = openMenu;
-  window.closeMenu = closeMenu;
-
-})();
-</script>
-<!-- END APPENDED -->
-  </body>
-<!-- APPENDED: improved preview + mobile menu script -->
-<script>
-  // set year
-  try {
-    document.getElementById('year').textContent = new Date().getFullYear();
-  } catch (e){/* ignore if element missing */ }
-
-  // previewImage: show modal with clicked image
-  function previewImage(src, alt) {
-    var modalImg = document.getElementById('modalImage');
-    var modalCaption = document.getElementById('modalCaption');
-    if (modalImg) modalImg.src = src;
-    if (modalImg) modalImg.alt = alt || '';
-    if (modalCaption) modalCaption.textContent = alt || '';
-
-    var el = document.getElementById('imagePreviewModal');
-    if (el) {
-      var m = bootstrap.Modal.getInstance(el);
+    try {
+      const modalImg = document.getElementById('modalImage');
+      const modalCaption = document.getElementById('modalCaption');
+      if (modalImg) modalImg.src = src || modalImg.src;
+      if (modalImg) modalImg.alt = alt || '';
+      if (modalCaption) modalCaption.textContent = alt || '';
+      const el = document.getElementById('imagePreviewModal');
+      if (!el) return;
+      let m = bootstrap.Modal.getInstance(el);
       if (!m) m = new bootstrap.Modal(el);
       m.show();
-    }
+    } catch(e){ console.error('previewImage error', e); }
   }
-
-  // MENU HANDLING (mobile)
-  function toggleMenu(event) {
-    event.stopPropagation();
-    var navLinks = document.getElementById('navLinks');
-    if (!navLinks) return;
-    navLinks.classList.toggle('active');
-  }
-
-  function closeMenu() {
-    var navLinks = document.getElementById('navLinks');
-    if (!navLinks) return;
-    navLinks.classList.remove('active');
-  }
-
-  // Close menu when clicking outside or when scrolling
-  document.addEventListener('click', function (event) {
-    var navLinks = document.getElementById('navLinks');
-    var toggle = document.querySelector('.nav-toggle');
-    if (!navLinks || !toggle) return;
-
-    // if menu open and click outside navLinks and not the toggle button, close
-    if (navLinks.classList.contains('active') &&
-        !navLinks.contains(event.target) &&
-        !toggle.contains(event.target)) {
-      closeMenu();
-    }
-  }, {passive:true});
-
-  // close on scroll (only if open)
-  var closeOnScroll = function () {
-    var navLinks = document.getElementById('navLinks');
-    if (navLinks && navLinks.classList.contains('active')) {
-      closeMenu();
-    }
-  };
-  window.addEventListener('scroll', closeOnScroll, {passive:true});
-
-  // Wire nav links: smooth scroll to section and auto-close menu after click
-  (function attachNavHandlers() {
-    var navLinks = document.querySelectorAll('.nav-link');
-    if (navLinks && navLinks.length) {
-      navLinks.forEach(function(link){
-        link.addEventListener('click', function(e){
-          // if it's an anchor to a section (starts with #)
-          var href = link.getAttribute('href') || '';
-          if (href.startsWith('#')) {
-            e.preventDefault();
-            var sanitized = href === '#' ? 'top' : href;
-            var target = (sanitized === 'top') ? document.documentElement : document.querySelector(sanitized);
-            if (target) {
-              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-          }
-          // ensure menu closes after navigation (delay slightly to allow user to see)
-          setTimeout(closeMenu, 200);
-        }, {passive:false});
-      });
-    }
-
-    // Social icons: close menu after click (for external links)
-    var socialAnchors = document.querySelectorAll('.social-icon a');
-    socialAnchors.forEach(function(a){
-      a.addEventListener('click', function(){
-        // close the menu shortly after opening the link
-        setTimeout(closeMenu, 200);
-      });
-    });
-  })();
-
-  // Optional: close menu when user taps any non-nav link that scrolls to a section
-  // (covers possible other anchors)
-  document.querySelectorAll('a[href^="#"]').forEach(function(a){
-    a.addEventListener('click', function(){
-      setTimeout(closeMenu, 200);
-    });
-  });
-
-  // Accessibility: close menu with Escape key
-  document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape') closeMenu();
-  });
-</script>
-  </body>
-<!-- APPENDED: robust preview + mobile menu script (replaces previous) -->
-<script>
-(() => {
-  // put year (safely)
-  try { const y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear(); } catch(e){}
-
-  // modal preview
-  function previewImage(src, alt) {
-    const modalImg = document.getElementById('modalImage');
-    const modalCaption = document.getElementById('modalCaption');
-    if (modalImg) modalImg.src = src || modalImg.src;
-    if (modalImg) modalImg.alt = alt || '';
-    if (modalCaption) modalCaption.textContent = alt || '';
-    const el = document.getElementById('imagePreviewModal');
-    if (!el) return;
-    let m = bootstrap.Modal.getInstance(el);
-    if (!m) m = new bootstrap.Modal(el);
-    m.show();
-  }
-  // expose to global scope (used by HTML onclicks)
   window.previewImage = previewImage;
 
-  // MENU LOGIC
-  const navLinksEl = () => document.getElementById('navLinks');
-  const toggleBtn = () => document.querySelector('.nav-toggle');
+  function debugLog(...args) {
+    // change to console.debug(...) to silence in production
+    console.log('[menu] ', ...args);
+  }
+
+  function getNav() { return document.getElementById('navLinks'); }
+  function getBtn() { return document.querySelector('.nav-toggle'); }
 
   function openMenu() {
-    const nav = navLinksEl(); const btn = toggleBtn();
+    const nav = getNav(), btn = getBtn();
     if (!nav) return;
     nav.classList.add('active');
-    // animate hamburger -> X
     if (btn) btn.classList.add('open');
-    // optional: lock body scroll on mobile when open
-    document.documentElement.style.overflow = 'hidden';
+    // ensure clickable
+    nav.style.pointerEvents = 'auto';
+    debugLog('openMenu -> active');
+    // prevent background scroll only on small screens
+    if (window.innerWidth <= 768) document.documentElement.style.overflow = 'hidden';
   }
 
   function closeMenu() {
-    const nav = navLinksEl(); const btn = toggleBtn();
+    const nav = getNav(), btn = getBtn();
     if (!nav) return;
     nav.classList.remove('active');
     if (btn) btn.classList.remove('open');
+    nav.style.pointerEvents = '';
+    debugLog('closeMenu -> removed active');
     document.documentElement.style.overflow = '';
   }
 
-  function toggleMenu(evt) {
-    evt && evt.stopPropagation();
-    const nav = navLinksEl();
+  function toggleMenu(ev) {
+    if (ev && ev.stopPropagation) ev.stopPropagation();
+    const nav = getNav();
     if (!nav) return;
-    if (nav.classList.contains('active')) closeMenu();
-    else openMenu();
+    if (nav.classList.contains('active')) closeMenu(); else openMenu();
   }
 
-  // attach to button (supports older markup)
+  // Install robust handlers on DOMContentLoaded
   document.addEventListener('DOMContentLoaded', () => {
-    const btn = toggleBtn();
-    if (btn) {
-      // If the icon markup is only an <i>, we add span wrappers to allow swap
-      if (!btn.querySelector('.bars')) {
-        // create bars and close-x spans inside the button for animation
-        btn.innerHTML = '<span class=\"bars\"><i class=\"fa-solid fa-bars\"></i></span><span class=\"close-x\"><i class=\"fa-solid fa-xmark\"></i></span>';
-      }
-      btn.addEventListener('click', toggleMenu, {passive:true});
+    const btn = getBtn();
+    const nav = getNav();
+    debugLog('DOMContentLoaded, found btn?', !!btn, 'nav?', !!nav);
+
+    if (!btn && nav) {
+      // create a fallback toggle if button missing
+      const fallback = document.createElement('button');
+      fallback.className = 'nav-toggle';
+      fallback.innerHTML = '<span class=\"bars\"><i class=\"fa-solid fa-bars\"></i></span><span class=\"close-x\"><i class=\"fa-solid fa-xmark\"></i></span>';
+      document.querySelector('.custom-nav .container > div').appendChild(fallback);
     }
 
-    // Close menu on scroll (debounced small threshold to avoid immediate closing)
-    let lastScroll = window.scrollY;
-    let scrollTimer = null;
-    window.addEventListener('scroll', () => {
-      if (!navLinksEl()?.classList.contains('active')) { lastScroll = window.scrollY; return; }
-      // if user scrolls more than 5px, close menu
-      if (Math.abs(window.scrollY - lastScroll) > 5) closeMenu();
-      // update lastScroll after short delay
-      clearTimeout(scrollTimer);
-      scrollTimer = setTimeout(() => lastScroll = window.scrollY, 200);
-    }, {passive:true});
+    // ensure any inline onclicks don't conflict: remove onclick attribute if present
+    const actualBtn = getBtn();
+    if (actualBtn && actualBtn.getAttribute('onclick')) {
+      debugLog('Removing inline onclick attribute from nav-toggle');
+      actualBtn.removeAttribute('onclick');
+    }
 
-    // Click outside to close
+    // remove duplicate listeners by replacing the button node (cheap reset)
+    if (actualBtn) {
+      const clone = actualBtn.cloneNode(true);
+      actualBtn.parentNode.replaceChild(clone, actualBtn);
+    }
+
+    const finalBtn = getBtn();
+    if (finalBtn) {
+      finalBtn.addEventListener('click', function(e){
+        // non-passive so stopPropagation works
+        e.stopPropagation();
+        toggleMenu(e);
+      }, { passive: false });
+      // make sure keyboard focus works
+      finalBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    // clicking nav links: smooth scroll and close menu
+    $$('.nav-link').forEach(link => {
+      link.addEventListener('click', function(e){
+        try {
+          const href = (this.getAttribute('href') || '').trim();
+          if (href && href.startsWith('#')) {
+            e.preventDefault();
+            const target = (href === '#' || href === '#top') ? document.documentElement : document.querySelector(href);
+            if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
+          }
+        } catch(err) { console.error(err); }
+        setTimeout(closeMenu, 180);
+      }, { passive: true });
+    });
+
+    // social links close menu after click
+    $$('.social-icon a').forEach(a => a.addEventListener('click', () => setTimeout(closeMenu, 120), { passive: true }));
+
+    // click outside to close
     document.addEventListener('click', (e) => {
-      const nav = navLinksEl(); const btnEl = toggleBtn();
-      if (!nav || !nav.classList.contains('active')) return;
-      // If click is inside nav or the toggle, ignore
-      if (nav.contains(e.target) || (btnEl && btnEl.contains(e.target))) return;
+      const navEl = getNav();
+      const bt = getBtn();
+      if (!navEl || !navEl.classList.contains('active')) return;
+      if (navEl.contains(e.target) || (bt && bt.contains(e.target))) return;
       closeMenu();
-    }, {passive:true});
+    }, { passive: true });
 
-    // Close on Escape
+    // close on scroll (debounced)
+    let scheduled = null;
+    window.addEventListener('scroll', () => {
+      if (scheduled) return;
+      scheduled = setTimeout(() => {
+        scheduled = null;
+        if (getNav()?.classList.contains('active')) closeMenu();
+      }, 120);
+    }, { passive: true });
+
+    // close on Escape
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
 
-    // Attach smooth-scroll + close behavior to all nav links
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', (evt) => {
-        // smooth scroll if anchor
-        const href = link.getAttribute('href') || '';
-        if (href.startsWith('#')) {
-          evt.preventDefault();
-          const target = href === '#' || href === '#top' ? document.documentElement : document.querySelector(href);
-          if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
-        }
-        // ensure menu closed after a tiny delay
-        setTimeout(closeMenu, 160);
-      }, {passive:false});
-    });
-
-    // Social links should close menu after click
-    document.querySelectorAll('.social-icon a').forEach(a => {
-      a.addEventListener('click', () => setTimeout(closeMenu, 100), {passive:true});
-    });
+    debugLog('Menu handlers installed');
   });
-
-  // expose functions for debugging if needed
-  window.toggleMenu = toggleMenu;
-  window.openMenu = openMenu;
-  window.closeMenu = closeMenu;
-
 })();
 </script>
-<!-- END APPENDED -->
+<!-- END OVERRIDE -->
+  </body>
+
+  </body>
+<!-- OVERRIDE: Robust mobile menu controller (replace previous scripts) -->
+<script>
+(() => {
+  // safe DOM helper
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+  function previewImage(src, alt) {
+    try {
+      const modalImg = document.getElementById('modalImage');
+      const modalCaption = document.getElementById('modalCaption');
+      if (modalImg) modalImg.src = src || modalImg.src;
+      if (modalImg) modalImg.alt = alt || '';
+      if (modalCaption) modalCaption.textContent = alt || '';
+      const el = document.getElementById('imagePreviewModal');
+      if (!el) return;
+      let m = bootstrap.Modal.getInstance(el);
+      if (!m) m = new bootstrap.Modal(el);
+      m.show();
+    } catch(e){ console.error('previewImage error', e); }
+  }
+  window.previewImage = previewImage;
+
+  function debugLog(...args) {
+    // change to console.debug(...) to silence in production
+    console.log('[menu] ', ...args);
+  }
+
+  function getNav() { return document.getElementById('navLinks'); }
+  function getBtn() { return document.querySelector('.nav-toggle'); }
+
+  function openMenu() {
+    const nav = getNav(), btn = getBtn();
+    if (!nav) return;
+    nav.classList.add('active');
+    if (btn) btn.classList.add('open');
+    // ensure clickable
+    nav.style.pointerEvents = 'auto';
+    debugLog('openMenu -> active');
+    // prevent background scroll only on small screens
+    if (window.innerWidth <= 768) document.documentElement.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    const nav = getNav(), btn = getBtn();
+    if (!nav) return;
+    nav.classList.remove('active');
+    if (btn) btn.classList.remove('open');
+    nav.style.pointerEvents = '';
+    debugLog('closeMenu -> removed active');
+    document.documentElement.style.overflow = '';
+  }
+
+  function toggleMenu(ev) {
+    if (ev && ev.stopPropagation) ev.stopPropagation();
+    const nav = getNav();
+    if (!nav) return;
+    if (nav.classList.contains('active')) closeMenu(); else openMenu();
+  }
+
+  // Install robust handlers on DOMContentLoaded
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = getBtn();
+    const nav = getNav();
+    debugLog('DOMContentLoaded, found btn?', !!btn, 'nav?', !!nav);
+
+    if (!btn && nav) {
+      // create a fallback toggle if button missing
+      const fallback = document.createElement('button');
+      fallback.className = 'nav-toggle';
+      fallback.innerHTML = '<span class=\"bars\"><i class=\"fa-solid fa-bars\"></i></span><span class=\"close-x\"><i class=\"fa-solid fa-xmark\"></i></span>';
+      document.querySelector('.custom-nav .container > div').appendChild(fallback);
+    }
+
+    // ensure any inline onclicks don't conflict: remove onclick attribute if present
+    const actualBtn = getBtn();
+    if (actualBtn && actualBtn.getAttribute('onclick')) {
+      debugLog('Removing inline onclick attribute from nav-toggle');
+      actualBtn.removeAttribute('onclick');
+    }
+
+    // remove duplicate listeners by replacing the button node (cheap reset)
+    if (actualBtn) {
+      const clone = actualBtn.cloneNode(true);
+      actualBtn.parentNode.replaceChild(clone, actualBtn);
+    }
+
+    const finalBtn = getBtn();
+    if (finalBtn) {
+      finalBtn.addEventListener('click', function(e){
+        // non-passive so stopPropagation works
+        e.stopPropagation();
+        toggleMenu(e);
+      }, { passive: false });
+      // make sure keyboard focus works
+      finalBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    // clicking nav links: smooth scroll and close menu
+    $$('.nav-link').forEach(link => {
+      link.addEventListener('click', function(e){
+        try {
+          const href = (this.getAttribute('href') || '').trim();
+          if (href && href.startsWith('#')) {
+            e.preventDefault();
+            const target = (href === '#' || href === '#top') ? document.documentElement : document.querySelector(href);
+            if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
+          }
+        } catch(err) { console.error(err); }
+        setTimeout(closeMenu, 180);
+      }, { passive: true });
+    });
+
+    // social links close menu after click
+    $$('.social-icon a').forEach(a => a.addEventListener('click', () => setTimeout(closeMenu, 120), { passive: true }));
+
+    // click outside to close
+    document.addEventListener('click', (e) => {
+      const navEl = getNav();
+      const bt = getBtn();
+      if (!navEl || !navEl.classList.contains('active')) return;
+      if (navEl.contains(e.target) || (bt && bt.contains(e.target))) return;
+      closeMenu();
+    }, { passive: true });
+
+    // close on scroll (debounced)
+    let scheduled = null;
+    window.addEventListener('scroll', () => {
+      if (scheduled) return;
+      scheduled = setTimeout(() => {
+        scheduled = null;
+        if (getNav()?.classList.contains('active')) closeMenu();
+      }, 120);
+    }, { passive: true });
+
+    // close on Escape
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+
+    debugLog('Menu handlers installed');
+  });
+})();
+</script>
+<!-- END OVERRIDE -->
+  </body>
+
+  </body>
+<!-- OVERRIDE: Robust mobile menu controller (replace previous scripts) -->
+<script>
+(() => {
+  // safe DOM helper
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+
+  function previewImage(src, alt) {
+    try {
+      const modalImg = document.getElementById('modalImage');
+      const modalCaption = document.getElementById('modalCaption');
+      if (modalImg) modalImg.src = src || modalImg.src;
+      if (modalImg) modalImg.alt = alt || '';
+      if (modalCaption) modalCaption.textContent = alt || '';
+      const el = document.getElementById('imagePreviewModal');
+      if (!el) return;
+      let m = bootstrap.Modal.getInstance(el);
+      if (!m) m = new bootstrap.Modal(el);
+      m.show();
+    } catch(e){ console.error('previewImage error', e); }
+  }
+  window.previewImage = previewImage;
+
+  function debugLog(...args) {
+    // change to console.debug(...) to silence in production
+    console.log('[menu] ', ...args);
+  }
+
+  function getNav() { return document.getElementById('navLinks'); }
+  function getBtn() { return document.querySelector('.nav-toggle'); }
+
+  function openMenu() {
+    const nav = getNav(), btn = getBtn();
+    if (!nav) return;
+    nav.classList.add('active');
+    if (btn) btn.classList.add('open');
+    // ensure clickable
+    nav.style.pointerEvents = 'auto';
+    debugLog('openMenu -> active');
+    // prevent background scroll only on small screens
+    if (window.innerWidth <= 768) document.documentElement.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    const nav = getNav(), btn = getBtn();
+    if (!nav) return;
+    nav.classList.remove('active');
+    if (btn) btn.classList.remove('open');
+    nav.style.pointerEvents = '';
+    debugLog('closeMenu -> removed active');
+    document.documentElement.style.overflow = '';
+  }
+
+  function toggleMenu(ev) {
+    if (ev && ev.stopPropagation) ev.stopPropagation();
+    const nav = getNav();
+    if (!nav) return;
+    if (nav.classList.contains('active')) closeMenu(); else openMenu();
+  }
+
+  // Install robust handlers on DOMContentLoaded
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = getBtn();
+    const nav = getNav();
+    debugLog('DOMContentLoaded, found btn?', !!btn, 'nav?', !!nav);
+
+    if (!btn && nav) {
+      // create a fallback toggle if button missing
+      const fallback = document.createElement('button');
+      fallback.className = 'nav-toggle';
+      fallback.innerHTML = '<span class=\"bars\"><i class=\"fa-solid fa-bars\"></i></span><span class=\"close-x\"><i class=\"fa-solid fa-xmark\"></i></span>';
+      document.querySelector('.custom-nav .container > div').appendChild(fallback);
+    }
+
+    // ensure any inline onclicks don't conflict: remove onclick attribute if present
+    const actualBtn = getBtn();
+    if (actualBtn && actualBtn.getAttribute('onclick')) {
+      debugLog('Removing inline onclick attribute from nav-toggle');
+      actualBtn.removeAttribute('onclick');
+    }
+
+    // remove duplicate listeners by replacing the button node (cheap reset)
+    if (actualBtn) {
+      const clone = actualBtn.cloneNode(true);
+      actualBtn.parentNode.replaceChild(clone, actualBtn);
+    }
+
+    const finalBtn = getBtn();
+    if (finalBtn) {
+      finalBtn.addEventListener('click', function(e){
+        // non-passive so stopPropagation works
+        e.stopPropagation();
+        toggleMenu(e);
+      }, { passive: false });
+      // make sure keyboard focus works
+      finalBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    // clicking nav links: smooth scroll and close menu
+    $$('.nav-link').forEach(link => {
+      link.addEventListener('click', function(e){
+        try {
+          const href = (this.getAttribute('href') || '').trim();
+          if (href && href.startsWith('#')) {
+            e.preventDefault();
+            const target = (href === '#' || href === '#top') ? document.documentElement : document.querySelector(href);
+            if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
+          }
+        } catch(err) { console.error(err); }
+        setTimeout(closeMenu, 180);
+      }, { passive: true });
+    });
+
+    // social links close menu after click
+    $$('.social-icon a').forEach(a => a.addEventListener('click', () => setTimeout(closeMenu, 120), { passive: true }));
+
+    // click outside to close
+    document.addEventListener('click', (e) => {
+      const navEl = getNav();
+      const bt = getBtn();
+      if (!navEl || !navEl.classList.contains('active')) return;
+      if (navEl.contains(e.target) || (bt && bt.contains(e.target))) return;
+      closeMenu();
+    }, { passive: true });
+
+    // close on scroll (debounced)
+    let scheduled = null;
+    window.addEventListener('scroll', () => {
+      if (scheduled) return;
+      scheduled = setTimeout(() => {
+        scheduled = null;
+        if (getNav()?.classList.contains('active')) closeMenu();
+      }, 120);
+    }, { passive: true });
+
+    // close on Escape
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+
+    debugLog('Menu handlers installed');
+  });
+})();
+</script>
+<!-- END OVERRIDE -->
   </body>
 </html>
