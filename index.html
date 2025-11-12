@@ -276,6 +276,48 @@
         box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
       }
     </style>
+
+/* --- Mobile menu fade/slide animation (injected) --- */
+@media (max-width: 768px) {
+  /* Make nav-links always present but hidden via opacity/transform to animate smoothly */
+  .custom-nav .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: #fff;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+    padding: 0.75rem 1rem;
+    gap: 0.5rem !important;
+    margin-top: 0.5rem;
+    /* start hidden but present for transitions */
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 240ms cubic-bezier(.22,.9,.37,1), transform 240ms cubic-bezier(.22,.9,.37,1), max-height 300ms ease;
+  }
+
+  /* Active (visible) state */
+  .custom-nav .nav-links.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    max-height: 600px; /* large enough to show all items */
+  }
+
+  /* Slight fade/slide for each nav-link item for micro animation */
+  .custom-nav .nav-link {
+    transition: transform 200ms ease, opacity 200ms ease;
+    opacity: 0.95;
+  }
+  .custom-nav .nav-links.active .nav-link {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
   </head>
   <body id="top">
     <!-- NAVBAR -->
@@ -533,40 +575,112 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      document.getElementById('year').textContent = new Date().getFullYear();
-      function previewImage(src, alt){
-        const modalImg = document.getElementById('modalImage');
-        const modalCaption = document.getElementById('modalCaption');
-        modalImg.src = src; modalImg.alt = alt || ''; modalCaption.textContent = alt || '';
-        const el = document.getElementById('imagePreviewModal');
-        let modal = bootstrap.Modal.getInstance(el); if(!modal){ modal = new bootstrap.Modal(el); } modal.show();
-      }
-      
-      // Mobile menu toggle
-      function toggleMenu(event) {
-        event.stopPropagation();
-        const navLinks = document.getElementById('navLinks');
-        navLinks.classList.toggle('active');
-      }
-      
-      function closeMenu() {
-        const navLinks = document.getElementById('navLinks');
-        navLinks.classList.remove('active');
-      }
-      
-      // Close menu when clicking outside
-      document.addEventListener('click', function(event) {
-        const navLinks = document.getElementById('navLinks');
-        const toggle = document.querySelector('.nav-toggle');
-        
-        // If menu is open and click is outside nav
-        if (navLinks.classList.contains('active') && 
-            !navLinks.contains(event.target) && 
-            !toggle.contains(event.target)) {
-          navLinks.classList.remove('active');
-        }
+    
+  </body>
+<!-- APPENDED: improved preview + mobile menu script -->
+<script>
+  // set year
+  try {
+    document.getElementById('year').textContent = new Date().getFullYear();
+  } catch (e){/* ignore if element missing */ }
+
+  // previewImage: show modal with clicked image
+  function previewImage(src, alt) {
+    var modalImg = document.getElementById('modalImage');
+    var modalCaption = document.getElementById('modalCaption');
+    if (modalImg) modalImg.src = src;
+    if (modalImg) modalImg.alt = alt || '';
+    if (modalCaption) modalCaption.textContent = alt || '';
+
+    var el = document.getElementById('imagePreviewModal');
+    if (el) {
+      var m = bootstrap.Modal.getInstance(el);
+      if (!m) m = new bootstrap.Modal(el);
+      m.show();
+    }
+  }
+
+  // MENU HANDLING (mobile)
+  function toggleMenu(event) {
+    event.stopPropagation();
+    var navLinks = document.getElementById('navLinks');
+    if (!navLinks) return;
+    navLinks.classList.toggle('active');
+  }
+
+  function closeMenu() {
+    var navLinks = document.getElementById('navLinks');
+    if (!navLinks) return;
+    navLinks.classList.remove('active');
+  }
+
+  // Close menu when clicking outside or when scrolling
+  document.addEventListener('click', function (event) {
+    var navLinks = document.getElementById('navLinks');
+    var toggle = document.querySelector('.nav-toggle');
+    if (!navLinks || !toggle) return;
+
+    // if menu open and click outside navLinks and not the toggle button, close
+    if (navLinks.classList.contains('active') &&
+        !navLinks.contains(event.target) &&
+        !toggle.contains(event.target)) {
+      closeMenu();
+    }
+  }, {passive:true});
+
+  // close on scroll (only if open)
+  var closeOnScroll = function () {
+    var navLinks = document.getElementById('navLinks');
+    if (navLinks && navLinks.classList.contains('active')) {
+      closeMenu();
+    }
+  };
+  window.addEventListener('scroll', closeOnScroll, {passive:true});
+
+  // Wire nav links: smooth scroll to section and auto-close menu after click
+  (function attachNavHandlers() {
+    var navLinks = document.querySelectorAll('.nav-link');
+    if (navLinks && navLinks.length) {
+      navLinks.forEach(function(link){
+        link.addEventListener('click', function(e){
+          // if it's an anchor to a section (starts with #)
+          var href = link.getAttribute('href') || '';
+          if (href.startsWith('#')) {
+            e.preventDefault();
+            var sanitized = href === '#' ? 'top' : href;
+            var target = (sanitized === 'top') ? document.documentElement : document.querySelector(sanitized);
+            if (target) {
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+          // ensure menu closes after navigation (delay slightly to allow user to see)
+          setTimeout(closeMenu, 200);
+        }, {passive:false});
       });
-    </script>
+    }
+
+    // Social icons: close menu after click (for external links)
+    var socialAnchors = document.querySelectorAll('.social-icon a');
+    socialAnchors.forEach(function(a){
+      a.addEventListener('click', function(){
+        // close the menu shortly after opening the link
+        setTimeout(closeMenu, 200);
+      });
+    });
+  })();
+
+  // Optional: close menu when user taps any non-nav link that scrolls to a section
+  // (covers possible other anchors)
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(){
+      setTimeout(closeMenu, 200);
+    });
+  });
+
+  // Accessibility: close menu with Escape key
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') closeMenu();
+  });
+</script>
   </body>
 </html>
