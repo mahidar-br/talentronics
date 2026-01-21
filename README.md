@@ -59,7 +59,7 @@ talentronics/
 ├── neon.css # Theme styling
 ├── README.md
 └── .gitignore
-
+```
 
 ---
 
