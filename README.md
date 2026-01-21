@@ -50,6 +50,7 @@ This project demonstrates **frontend development**, **responsive UI design**, an
 
 ## 📁 Project Structure
 
+```text
 talentronics/
 ├── .github/workflows/ # GitHub Pages deployment
 ├── images/ # Posters & gallery images
@@ -90,7 +91,7 @@ To reuse this template for another event:
 
 ## 🎓 Academic Context
 
-This website was developed as part of **college fest organization activities** and showcases:
+This website was developed as part of **College fest organization activities** and showcases:
 - Frontend engineering fundamentals
 - Responsive UI design
 - Version control & CI/CD workflow
@@ -99,7 +100,7 @@ This website was developed as part of **college fest organization activities** a
 
 ## 👤 Author
 
-**Mahi**  
+**B R Mahidar**  
 Final-year Engineering Student  
 GitHub: https://github.com/mahidar-br
 
