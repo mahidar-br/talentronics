@@ -4,3 +4,6 @@ node_modules/
 *.log
 .env
 index.html.bak*
+index.html.backup*
+*.bak
+
